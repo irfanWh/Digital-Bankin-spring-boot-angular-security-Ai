@@ -1,0 +1,33 @@
+<section class="auth-page">
+  <form class="auth-card" (ngSubmit)="submit()">
+    <div>
+      <p class="eyebrow">Digital Banking</p>
+      <h1>Inscription</h1>
+    </div>
+
+    <label>
+      Nom utilisateur
+      <input name="username" [(ngModel)]="username" autocomplete="username" required />
+    </label>
+
+    <label>
+      Email
+      <input name="email" type="email" [(ngModel)]="email" autocomplete="email" required />
+    </label>
+
+    <label>
+      Mot de passe
+      <input name="password" type="password" [(ngModel)]="password" autocomplete="new-password" required />
+    </label>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Creation...' : 'Créer le compte' }}
+    </button>
+
+    <a routerLink="/login">J'ai déjà un compte</a>
+  </form>
+</section>

@@ -1,0 +1,20 @@
+.dashboard-page {
+  padding: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 12px;
+  color: #111827;
+}
+
+p {
+  color: #475569;
+}

@@ -1,0 +1,28 @@
+<section class="auth-page">
+  <form class="auth-card" (ngSubmit)="submit()">
+    <div>
+      <p class="eyebrow">Digital Banking</p>
+      <h1>Connexion</h1>
+    </div>
+
+    <label>
+      Nom utilisateur
+      <input name="username" [(ngModel)]="username" autocomplete="username" required />
+    </label>
+
+    <label>
+      Mot de passe
+      <input name="password" type="password" [(ngModel)]="password" autocomplete="current-password" required />
+    </label>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Connexion...' : 'Se connecter' }}
+    </button>
+
+    <a routerLink="/register">Créer un compte</a>
+  </form>
+</section>
