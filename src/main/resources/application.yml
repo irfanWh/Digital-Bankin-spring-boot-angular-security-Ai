@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: digital-banking
+
+server:
+  port: 8080
