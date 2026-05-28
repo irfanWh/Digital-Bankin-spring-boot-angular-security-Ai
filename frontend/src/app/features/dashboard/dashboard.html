@@ -1,7 +1,50 @@
 <section class="dashboard-page">
-  <div>
-    <p class="eyebrow">Session active</p>
-    <h1>Bienvenue {{ authService.username() }}</h1>
-    <p>Le tableau de bord bancaire complet arrivera dans l'étape Chart.js.</p>
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Dashboard</p>
+      <h1>Bienvenue {{ authService.username() }}</h1>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="stats-grid">
+    <article>
+      <span>Clients</span>
+      <strong>{{ stats?.totalCustomers || 0 }}</strong>
+    </article>
+    <article>
+      <span>Comptes</span>
+      <strong>{{ stats?.totalAccounts || 0 }}</strong>
+    </article>
+    <article>
+      <span>Solde total</span>
+      <strong>{{ stats?.totalBalance || 0 }}</strong>
+    </article>
+  </div>
+
+  <div class="charts-grid">
+    <section class="chart-panel">
+      <h2>Crédit vs débit</h2>
+      <div class="chart-box">
+        <canvas baseChart [data]="operationChartData" [options]="chartOptions" type="doughnut"></canvas>
+      </div>
+    </section>
+
+    <section class="chart-panel">
+      <h2>Comptes par statut</h2>
+      <div class="chart-box">
+        <canvas baseChart [data]="statusChartData" [options]="chartOptions" type="bar"></canvas>
+      </div>
+    </section>
+
+    <section class="chart-panel">
+      <h2>Types de comptes</h2>
+      <div class="chart-box">
+        <canvas baseChart [data]="typeChartData" [options]="chartOptions" type="pie"></canvas>
+      </div>
+    </section>
   </div>
 </section>

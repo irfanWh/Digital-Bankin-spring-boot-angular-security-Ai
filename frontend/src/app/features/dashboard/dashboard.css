@@ -1,5 +1,13 @@
 .dashboard-page {
+  display: grid;
+  gap: 22px;
   padding: 32px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .eyebrow {
@@ -11,10 +19,69 @@
 }
 
 h1 {
-  margin: 0 0 12px;
+  margin: 0;
   color: #111827;
 }
 
-p {
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+article,
+.chart-panel {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+article span {
   color: #475569;
+  font-weight: 700;
+}
+
+article strong {
+  font-size: 28px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.chart-panel {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.chart-box {
+  height: 280px;
+  position: relative;
+}
+
+.error {
+  margin: 0;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+  .stats-grid,
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
 }
