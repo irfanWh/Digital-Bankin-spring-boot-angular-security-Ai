@@ -1,6 +1,7 @@
 package ma.enset.digitalbanking.services;
 
 import lombok.RequiredArgsConstructor;
+import ma.enset.digitalbanking.audit.AuditService;
 import ma.enset.digitalbanking.dtos.AccountHistoryDTO;
 import ma.enset.digitalbanking.dtos.AccountOperationDTO;
 import ma.enset.digitalbanking.dtos.BankAccountDTO;
@@ -43,12 +44,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     private final BankAccountRepository bankAccountRepository;
     private final AccountOperationRepository accountOperationRepository;
     private final BankAccountMapper bankAccountMapper;
+    private final AuditService auditService;
 
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         Customer customer = bankAccountMapper.fromCustomerDTO(customerDTO);
         customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy(currentUsername());
+        customer.setCreatedBy(auditService.currentUsername());
         Customer savedCustomer = customerRepository.save(customer);
         return bankAccountMapper.fromCustomer(savedCustomer);
     }
@@ -73,7 +75,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         customer.setName(customerDTO.getName());
         customer.setEmail(customerDTO.getEmail());
         customer.setUpdatedAt(LocalDateTime.now());
-        customer.setUpdatedBy(currentUsername());
+        customer.setUpdatedBy(auditService.currentUsername());
         Customer updatedCustomer = customerRepository.save(customer);
         return bankAccountMapper.fromCustomer(updatedCustomer);
     }
@@ -103,7 +105,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .createdAt(LocalDateTime.now())
                 .status(AccountStatus.CREATED)
                 .customer(customer)
-                .createdBy(currentUsername())
+                .createdBy(auditService.currentUsername())
                 .build();
         CurrentAccount savedAccount = bankAccountRepository.save(currentAccount);
         return bankAccountMapper.fromCurrentBankAccount(savedAccount);
@@ -120,7 +122,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .createdAt(LocalDateTime.now())
                 .status(AccountStatus.CREATED)
                 .customer(customer)
-                .createdBy(currentUsername())
+                .createdBy(auditService.currentUsername())
                 .build();
         SavingAccount savedAccount = bankAccountRepository.save(savingAccount);
         return bankAccountMapper.fromSavingBankAccount(savedAccount);
@@ -153,7 +155,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountOperationRepository.save(accountOperation);
         bankAccount.setBalance(bankAccount.getBalance() - amount);
         bankAccount.setUpdatedAt(LocalDateTime.now());
-        bankAccount.setUpdatedBy(currentUsername());
+        bankAccount.setUpdatedBy(auditService.currentUsername());
         bankAccountRepository.save(bankAccount);
     }
 
@@ -165,7 +167,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountOperationRepository.save(accountOperation);
         bankAccount.setBalance(bankAccount.getBalance() + amount);
         bankAccount.setUpdatedAt(LocalDateTime.now());
-        bankAccount.setUpdatedBy(currentUsername());
+        bankAccount.setUpdatedBy(auditService.currentUsername());
         bankAccountRepository.save(bankAccount);
     }
 
@@ -255,7 +257,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .type(operationType)
                 .bankAccount(bankAccount)
                 .description(description)
-                .createdBy(currentUsername())
+                .createdBy(auditService.currentUsername())
                 .build();
     }
 
@@ -288,7 +290,4 @@ public class BankAccountServiceImpl implements BankAccountService {
         return "UNKNOWN";
     }
 
-    private String currentUsername() {
-        return "system";
-    }
 }
