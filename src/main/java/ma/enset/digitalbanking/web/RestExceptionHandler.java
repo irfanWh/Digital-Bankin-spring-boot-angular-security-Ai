@@ -6,6 +6,7 @@ import ma.enset.digitalbanking.exceptions.CustomerNotFoundException;
 import ma.enset.digitalbanking.exceptions.OperationNotAllowedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,6 +30,11 @@ public class RestExceptionHandler {
     })
     public ResponseEntity<Map<String, Object>> handleBadRequest(RuntimeException exception) {
         return error(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthentication(AuthenticationException exception) {
+        return error(HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> error(HttpStatus status, String message) {

@@ -5,19 +5,38 @@ import ma.enset.digitalbanking.dtos.CurrentBankAccountDTO;
 import ma.enset.digitalbanking.dtos.CustomerDTO;
 import ma.enset.digitalbanking.dtos.SavingBankAccountDTO;
 import ma.enset.digitalbanking.services.BankAccountService;
+import ma.enset.digitalbanking.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class DataInitializer {
 
     private final BankAccountService bankAccountService;
+    private final UserService userService;
 
     @Bean
     public CommandLineRunner seedBankingData() {
         return args -> {
+            userService.saveRoleIfMissing(UserService.ROLE_ADMIN);
+            userService.saveRoleIfMissing(UserService.ROLE_USER);
+            userService.createUserIfMissing(
+                    "admin",
+                    "admin@example.com",
+                    "admin123",
+                    List.of(UserService.ROLE_ADMIN, UserService.ROLE_USER)
+            );
+            userService.createUserIfMissing(
+                    "user",
+                    "user@example.com",
+                    "user123",
+                    List.of(UserService.ROLE_USER)
+            );
+
             if (!bankAccountService.listCustomers().isEmpty()) {
                 return;
             }

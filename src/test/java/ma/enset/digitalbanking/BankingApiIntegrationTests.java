@@ -26,7 +26,8 @@ class BankingApiIntegrationTests {
 
     @Test
     void shouldListSeedCustomers() throws Exception {
-        mockMvc.perform(get("/api/customers"))
+        mockMvc.perform(get("/api/customers")
+                        .header("Authorization", "Bearer " + adminToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
@@ -40,7 +41,10 @@ class BankingApiIntegrationTests {
                 }
                 """;
 
+        String token = adminToken();
+
         mockMvc.perform(post("/api/customers")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(customerPayload))
                 .andExpect(status().isCreated())
@@ -48,6 +52,7 @@ class BankingApiIntegrationTests {
                 .andExpect(jsonPath("$.name").value("Test Customer"));
 
         mockMvc.perform(get("/api/customers/search")
+                        .header("Authorization", "Bearer " + token)
                         .param("keyword", "Test"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
@@ -62,7 +67,10 @@ class BankingApiIntegrationTests {
                 }
                 """;
 
+        String token = adminToken();
+
         String customerResponse = mockMvc.perform(post("/api/customers")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(customerPayload))
                 .andExpect(status().isCreated())
@@ -81,6 +89,7 @@ class BankingApiIntegrationTests {
                 """.formatted(customerId);
 
         String accountResponse = mockMvc.perform(post("/api/accounts/current")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(accountPayload))
                 .andExpect(status().isCreated())
@@ -101,12 +110,32 @@ class BankingApiIntegrationTests {
                 """.formatted(accountId);
 
         mockMvc.perform(post("/api/accounts/credit")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(creditPayload))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/accounts/{accountId}", accountId))
+        mockMvc.perform(get("/api/accounts/{accountId}", accountId)
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.balance").value(1250.0));
+    }
+
+    private String adminToken() throws Exception {
+        String loginPayload = """
+                {
+                  "username": "admin",
+                  "password": "admin123"
+                }
+                """;
+
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginPayload))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        return objectMapper.readTree(loginResponse).get("token").asText();
     }
 }
