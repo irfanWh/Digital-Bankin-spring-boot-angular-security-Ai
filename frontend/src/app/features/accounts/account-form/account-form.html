@@ -1,0 +1,46 @@
+<section class="page">
+  <form class="form-panel" (ngSubmit)="submit()">
+    <div class="page-header">
+      <div>
+        <p class="eyebrow">Compte</p>
+        <h1>{{ accountType === 'current' ? 'Compte courant' : 'Compte épargne' }}</h1>
+      </div>
+      <a routerLink="/accounts">Retour</a>
+    </div>
+
+    <label>
+      Client
+      <select name="customerId" [(ngModel)]="customerId" required>
+        <option [ngValue]="undefined">Sélectionner</option>
+        @for (customer of customers; track customer.id) {
+          <option [ngValue]="customer.id">{{ customer.name }} - {{ customer.email }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Solde initial
+      <input name="initialBalance" type="number" [(ngModel)]="initialBalance" min="0" required />
+    </label>
+
+    @if (accountType === 'current') {
+      <label>
+        Découvert
+        <input name="overDraft" type="number" [(ngModel)]="overDraft" min="0" required />
+      </label>
+    } @else {
+      <label>
+        Taux intérêt
+        <input name="interestRate" type="number" [(ngModel)]="interestRate" min="0" step="0.1" required />
+      </label>
+    }
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Création...' : 'Créer' }}
+    </button>
+  </form>
+</section>

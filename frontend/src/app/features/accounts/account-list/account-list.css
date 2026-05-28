@@ -1,0 +1,14 @@
+@import '../../customers/customer-list/customer-list.css';
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mono {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: monospace;
+}

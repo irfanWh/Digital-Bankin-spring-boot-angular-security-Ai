@@ -1,0 +1,49 @@
+<section class="page">
+  <form class="form-panel" (ngSubmit)="submit()">
+    <div class="page-header">
+      <div>
+        <p class="eyebrow">Opération</p>
+        <h1>Transfert</h1>
+      </div>
+      <a routerLink="/accounts">Retour</a>
+    </div>
+
+    <label>
+      Source
+      <select name="accountSource" [(ngModel)]="accountSource" required>
+        <option value="">Sélectionner</option>
+        @for (account of accounts; track account.id) {
+          <option [value]="account.id">{{ account.customerDTO?.name || account.id }} - {{ account.balance }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Destination
+      <select name="accountDestination" [(ngModel)]="accountDestination" required>
+        <option value="">Sélectionner</option>
+        @for (account of accounts; track account.id) {
+          <option [value]="account.id">{{ account.customerDTO?.name || account.id }} - {{ account.balance }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Montant
+      <input name="amount" type="number" [(ngModel)]="amount" min="1" required />
+    </label>
+
+    <label>
+      Description
+      <input name="description" [(ngModel)]="description" required />
+    </label>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Transfert...' : 'Valider' }}
+    </button>
+  </form>
+</section>
