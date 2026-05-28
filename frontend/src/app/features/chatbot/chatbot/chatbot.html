@@ -1,0 +1,36 @@
+<section class="chat-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Assistant</p>
+      <h1>Chatbot bancaire</h1>
+    </div>
+  </div>
+
+  <div class="chat-window">
+    @for (item of messages; track $index) {
+      <div class="message" [class.user]="item.role === 'user'">
+        <p>{{ item.content }}</p>
+        @if (item.createdAt) {
+          <span>{{ item.createdAt }}</span>
+        }
+      </div>
+    } @empty {
+      <div class="empty-state">Pose une question sur les clients, comptes, opérations ou statistiques.</div>
+    }
+
+    @if (loading) {
+      <div class="message">
+        <p>Réponse en cours...</p>
+      </div>
+    }
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <form class="composer" (ngSubmit)="send()">
+    <input name="message" [(ngModel)]="message" placeholder="Écrire une question" />
+    <button type="submit" [disabled]="loading">Envoyer</button>
+  </form>
+</section>

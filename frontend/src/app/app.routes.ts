@@ -7,6 +7,7 @@ import { AccountForm } from './features/accounts/account-form/account-form';
 import { AccountList } from './features/accounts/account-list/account-list';
 import { CustomerForm } from './features/customers/customer-form/customer-form';
 import { CustomerList } from './features/customers/customer-list/customer-list';
+import { Chatbot } from './features/chatbot/chatbot/chatbot';
 import { Dashboard } from './features/dashboard/dashboard';
 import { TransferForm } from './features/operations/transfer-form/transfer-form';
 
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'accounts/new/saving', component: AccountForm, data: { type: 'saving' }, canActivate: [authGuard] },
   { path: 'accounts/:id', component: AccountDetails, canActivate: [authGuard] },
   { path: 'operations/transfer', component: TransferForm, canActivate: [authGuard] },
+  { path: 'chatbot', component: Chatbot, canActivate: [authGuard] },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' },
 ];

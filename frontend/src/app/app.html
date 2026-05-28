@@ -5,6 +5,7 @@
     @if (authService.isAuthenticated()) {
       <a routerLink="/customers">Clients</a>
       <a routerLink="/accounts">Comptes</a>
+      <a routerLink="/chatbot">Chatbot</a>
       <span>{{ authService.username() }}</span>
       <button type="button" (click)="authService.logout()">Déconnexion</button>
     } @else {
