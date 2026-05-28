@@ -3,6 +3,7 @@
 
   <nav>
     @if (authService.isAuthenticated()) {
+      <a routerLink="/customers">Clients</a>
       <span>{{ authService.username() }}</span>
       <button type="button" (click)="authService.logout()">Déconnexion</button>
     } @else {

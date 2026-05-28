@@ -1,0 +1,29 @@
+<section class="page">
+  <form class="form-panel" (ngSubmit)="submit()">
+    <div class="page-header">
+      <div>
+        <p class="eyebrow">Client</p>
+        <h1>{{ isEditMode ? 'Modifier client' : 'Ajouter client' }}</h1>
+      </div>
+      <a routerLink="/customers">Retour</a>
+    </div>
+
+    <label>
+      Nom
+      <input name="name" [(ngModel)]="customer.name" required />
+    </label>
+
+    <label>
+      Email
+      <input name="email" type="email" [(ngModel)]="customer.email" required />
+    </label>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+  </form>
+</section>

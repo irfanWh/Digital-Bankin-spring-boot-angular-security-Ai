@@ -1,0 +1,51 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Clients</p>
+      <h1>Gestion clients</h1>
+    </div>
+    <a class="primary-action" routerLink="/customers/new">Ajouter</a>
+  </div>
+
+  <form class="toolbar" (ngSubmit)="search()">
+    <input name="keyword" [(ngModel)]="keyword" placeholder="Rechercher par nom" />
+    <button type="submit">Rechercher</button>
+    <button type="button" class="secondary" (click)="loadCustomers()">Réinitialiser</button>
+  </form>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Créé par</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (customer of customers; track customer.id) {
+          <tr>
+            <td>{{ customer.id }}</td>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.createdBy || '-' }}</td>
+            <td class="actions">
+              <a [routerLink]="['/customers', customer.id, 'edit']">Modifier</a>
+              <button type="button" (click)="deleteCustomer(customer)">Supprimer</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">{{ loading ? 'Chargement...' : 'Aucun client' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
